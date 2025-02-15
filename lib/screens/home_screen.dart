@@ -10,11 +10,12 @@ import '../widgets/task_navigation_bar.dart';
 import '../services/progress_manager.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({ super.key});
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   List<Lesson> _lessons = [];
   Lesson? _selectedLesson;
   int _currentTaskIndex = 0;
@@ -83,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case "match":
         return MatchTask(data: task.data);
       default:
-        return Center(child: Text("Неизвестный тип задания"));
+        return const Center(child: Text("Неизвестный тип задания"));
     }
   }
 
@@ -104,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
@@ -136,24 +137,24 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: _selectedLesson == null || _selectedLesson!.tasks.isEmpty
-          ? Center(child: Text('Выберите урок из меню'))
-          : Column(
-              children: [
-                Expanded(
-                  child: _buildTask(_selectedLesson!.tasks[_currentTaskIndex]),
-                ),
-                TaskNavigationBar(
-                  onTaskChanged: _onTaskChanged,
-                  currentIndex: _currentTaskIndex,
-                  totalTasks: _selectedLesson!.tasks.length,
-                ),
-                if (!_completedTasks.contains(_selectedLesson!.tasks[_currentTaskIndex].id))
-                  ElevatedButton(
-                    onPressed: _markTaskAsCompleted,
-                    child: Text("Задание пройдено"),
-                  ),
-              ],
-            ),
+      ? const Center(child: Text('Выберите урок из меню'))
+      : Column(
+        children: [
+          Expanded(
+            child: _buildTask(_selectedLesson!.tasks[_currentTaskIndex]),
+          ),
+          TaskNavigationBar(
+            onTaskChanged: _onTaskChanged,
+            currentIndex: _currentTaskIndex,
+            totalTasks: _selectedLesson!.tasks.length,
+          ),
+          if (!_completedTasks.contains(_selectedLesson!.tasks[_currentTaskIndex].id))
+          ElevatedButton(
+            onPressed: _markTaskAsCompleted,
+            child: const Text("Задание пройдено"),
+          ),
+        ],
+      ),
     );
   }
 }

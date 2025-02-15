@@ -3,7 +3,7 @@ import 'package:poliglotim/models/task.dart';
 
 class MockApi {
   Future<List<Lesson>> getLessons() async {
-    await Future.delayed(Duration(seconds: 2)); // Имитация задержки сети
+    await Future.delayed(const Duration(seconds: 2)); // Имитация задержки сети
     return [
       Lesson(
         id: "1",
@@ -12,7 +12,7 @@ class MockApi {
           Task(
             id: "1",
             type: "video",
-            data: "https://www.youtube.com/watch?v=XC9JPRyON9U", // Ссылка на видео
+            data: "assets/videos/bee.mp4", // Ссылка на видео
           ),
           Task(
             id: "2",
@@ -49,20 +49,20 @@ class MockApi {
         title: "Ключи",
         tasks: [
           Task(
-            id: "1",
+            id: "5",
             type: "video",
-            data: "https://www.youtube.com/watch?v=XC9JPRyON9U", // Ссылка на видео
+            data: "assets/videos/bunny.mp4", // Ссылка на видео
           ),
           Task(
-            id: "2",
+            id: "6",
             type: "fill",
             data: {
-              "text": "Китайский язык — это ______ и ______ язык.",
-              "answers": ["красивый", "сложный"],
+              "text": "Ключи бывают ______ и ______ .",
+              "answers": ["простые", "составные"],
             },
           ),
           Task(
-            id: "3",
+            id: "7",
             type: "match",
             data: {
               "columns": [
