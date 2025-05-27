@@ -78,11 +78,11 @@ class VideoTaskState extends State<VideoTask> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error, color: Colors.red, size: 50),
-            SizedBox(height: 10),
+            const Icon(Icons.error, color: Colors.red, size: 50),
+            const SizedBox(height: 10),
             Text(
               _errorMessage,
-              style: TextStyle(fontSize: 16, color: Colors.red),
+              style: const TextStyle(fontSize: 16, color: Colors.red),
               textAlign: TextAlign.center,
             ),
           ],
