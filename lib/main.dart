@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
-import 'core/services/token_storage.dart';
-import 'data/datasources/local/auth_local_ds.dart';
-import 'injection_container.dart' as di;
-import 'presentation/viewmodels/auth_viewmodel.dart';
-import 'presentation/views/auth/login_screen.dart';
-import 'presentation/views/courses/course_list_screen.dart';
-import 'presentation/views/splash_screen.dart';
+import 'package:poliglotim/presentation/viewmodels/auth_viewmodel.dart';
+import 'package:poliglotim/presentation/views/auth/login_screen.dart';
+import 'package:poliglotim/presentation/views/study/courses/courses_screen.dart';
+import 'package:poliglotim/presentation/views/study/course/course_screen.dart';
+import 'package:poliglotim/presentation/views/splash_screen.dart';
+
+import 'package:poliglotim/core/theme/app_theme.dart';
+import 'package:poliglotim/core/widgets/gradient_background.dart';
+
+import 'package:poliglotim/injection_container.dart' as di;
  
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init(); // ← Важно!
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,33 +23,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => AuthViewModel(
-            localDataSource: AuthLocalDataSource(di.getIt<TokenStorage>()),
-          ),
-        ),
-      ],
-      child: MaterialApp(
+    return MaterialApp(
         title: 'Course App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+        theme: AppTheme.lightTheme,
+        // home: const AuthWrapper(),
+        // home: LoginScreen(),
+        home: const GradientBackground(
+          child: CoursesScreen(),
         ),
-        home: const AuthWrapper(),
         routes: {
-          '/courses': (context) => const CourseListScreen(),
+          '/courses': (context) => const CoursesScreen(),
           '/login': (context) => const LoginScreen(),
+          '/course': (context) {
+            final courseId = ModalRoute.of(context)!.settings.arguments as String;
+            return CourseScreen(courseId: courseId);
+          },
         },
-        debugShowCheckedModeBanner: false,
-      ),
+        // debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({Key? key}) : super(key: key);
+  const AuthWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +54,7 @@ class AuthWrapper extends StatelessWidget {
     return authViewModel.isLoading
         ? const SplashScreen()
         : authViewModel.isAuthenticated
-            ? const CourseListScreen()
+            ? const CoursesScreen()
             : const LoginScreen();
   }
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:poliglotim/data/local/token_storage.dart';
 
-import '../../data/datasources/local/auth_local_ds.dart';
 
 class AuthViewModel with ChangeNotifier {
-  final AuthLocalDataSource _localDataSource;
+  final LocalDataSource _localStorage;
   
   bool _isAuthenticated = false;
   bool _isLoading = false;
   String? _error;
 
-  AuthViewModel({required AuthLocalDataSource localDataSource})
-      : _localDataSource = localDataSource;
+  // AuthViewModel({required AuthLocalDataSource localDataSource})
+  //     : _localDataSource = localDataSource;
+  AuthViewModel(this._localStorage);
 
   bool get isAuthenticated => _isAuthenticated;
   bool get isLoading => _isLoading;
@@ -22,7 +22,7 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
     
     try {
-      final token = await _localDataSource.getCachedToken();
+      final token = await _localStorage.getCachedToken();
       _isAuthenticated = token != null;
       await Future.delayed(const Duration(milliseconds: 4500));
     } catch (e) {
@@ -43,7 +43,7 @@ class AuthViewModel with ChangeNotifier {
       // Предположим, что мы получили токен
       const mockToken = 'your.jwt.token';
       
-      await _localDataSource.cacheToken(mockToken);
+      await _localStorage.cacheToken(mockToken);
       _isAuthenticated = true;
     } catch (e) {
       _error = e.toString();
@@ -59,7 +59,7 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
     
     try {
-      await _localDataSource.deleteCachedToken();
+      await _localStorage.deleteCachedToken();
       _isAuthenticated = false;
     } catch (e) {
       _error = e.toString();
