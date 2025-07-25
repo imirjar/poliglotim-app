@@ -120,8 +120,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildCourseTitle(course.name),
-              if (course.description != null) 
-                _buildCourseDescription(course.description!),
+              if (course.description.isNotEmpty) 
+                _buildCourseDescription(course.description),
             ],
           ),
         ),

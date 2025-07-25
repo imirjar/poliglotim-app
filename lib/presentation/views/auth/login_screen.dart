@@ -1,75 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:poliglotim/core/widgets/custom_button.dart';
-import 'package:poliglotim/core/widgets/custom_text_field.dart';
 
-class LoginScreen extends StatelessWidget {
+import 'package:poliglotim/presentation/viewmodels/auth_viewmodel.dart';
+import 'package:poliglotim/presentation/views/ui/elements/custom_button.dart';
+import 'package:poliglotim/presentation/views/ui/elements/custom_text_field.dart';
+import 'package:poliglotim/injection_container.dart' as di;
+import 'package:poliglotim/presentation/views/ui/neomorph_container.dart';
+
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      // Фон теперь берется из темы автоматически
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Container(
-              width: 400,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(255, 255, 255, 1),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  const BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(-6, -6),
-                    blurRadius: 16,
-                  ),
-                  BoxShadow(
-                    color: Colors.black.withAlpha(26),
-                    offset: const Offset(6, 6),
-                    blurRadius: 16,
-                  ),
-                ],
-              ),
-              child: const LoginForm(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
-
-  @override
-  State<LoginForm> createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State<LoginForm> {
-  final _formKey = GlobalKey<FormState>();
+class _LoginScreenState extends State<LoginScreen> {
+  late final AuthViewModel _viewModel;
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
-    // Логика авторизации
+  void initState() {
+    super.initState();
+    _viewModel = di.getIt<AuthViewModel>();
   }
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: NeumorphicContainer(
+          width: 400,
+          height: 450,
+          padding: const EdgeInsets.all(24),
+          child: _buildLoginForm()
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginForm() {
     return Form(
-      key: _formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -93,9 +64,12 @@ class _LoginFormState extends State<LoginForm> {
           ),
           const SizedBox(height: 24),
           CustomCircleButton(
-            onPressed: _submit,
+            onPressed: () => {_viewModel.login(_usernameController.text, _usernameController.text)},
             icon: Icons.arrow_upward_outlined,
           ),
+          // Container(
+          //   child: Text(_viewModel.error.toString()),
+          // )
         ],
       ),
     );

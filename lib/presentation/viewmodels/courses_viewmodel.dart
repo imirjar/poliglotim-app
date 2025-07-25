@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:poliglotim/domain/models/course.dart';
-import 'package:poliglotim/domain/repositories/course_repo.dart';
+import 'package:poliglotim/domain/repositories/course_repository.dart';
 // view_models/courses_view_model.dart
 
 class CoursesViewModel with ChangeNotifier {
@@ -27,7 +25,7 @@ class CoursesViewModel with ChangeNotifier {
       _courses = await _repository.getCourses();
       _error = null;
     } catch (e) {
-      print("ERROR is $e");
+      // print("ERROR is $e");
       _error = e.toString();
       _courses = [];
     } finally {

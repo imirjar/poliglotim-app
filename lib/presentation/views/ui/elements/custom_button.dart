@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:poliglotim/core/widgets/styles/button_styles.dart';
+import 'package:poliglotim/presentation/views/ui/elements/styles/button_styles.dart';
 
 class CustomCircleButton extends StatefulWidget {
   final VoidCallback onPressed;

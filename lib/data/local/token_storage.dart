@@ -1,20 +1,33 @@
-import 'package:poliglotim/core/services/token_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-
-class LocalDataSource {
-  final TokenStorage _tokenStorage;
-
-  LocalDataSource(this._tokenStorage);
+class TokenStorage {
+  static const _authTokenKey = 'auth_token';
 
   Future<void> cacheToken(String token) async {
-    await _tokenStorage.saveToken(token);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_authTokenKey, token);
+    } catch (e) {
+      print("STORAGE ERROR: $e");
+    }
   }
 
   Future<String?> getCachedToken() async {
-    return await _tokenStorage.getToken();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString(_authTokenKey);
+    } catch (e) {
+      print("STORAGE ERROR: $e");
+      return null;
+    }
   }
 
   Future<void> deleteCachedToken() async {
-    await _tokenStorage.deleteToken();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_authTokenKey);
+    } catch (e) {
+      print("STORAGE ERROR: $e");
+    }
   }
 }

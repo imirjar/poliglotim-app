@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:poliglotim/core/widgets/styles/input_styles.dart';
+import 'package:poliglotim/presentation/views/ui/elements/styles/input_styles.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;

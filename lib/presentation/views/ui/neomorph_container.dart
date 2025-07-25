@@ -21,6 +21,7 @@ class NeumorphicContainer extends StatelessWidget {
     this.width,
     this.height,
     this.color = const Color.fromARGB(255, 255, 255, 255),
+    // this.color = const Color.fromRGBO(255, 255, 255, 1),
     this.borderRadius = const BorderRadius.all(Radius.circular(15)),
     this.lightSource = const Offset(-1, -1),
     this.intensity = 0.8,
@@ -39,26 +40,18 @@ class NeumorphicContainer extends StatelessWidget {
 
     // Рассчитываем тени на основе направления источника света
     final List<BoxShadow> shadows = customShadows ??
-        [
-          // Тень "внешняя" (светлая)
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withOpacity(intensity)
-                : Colors.white.withOpacity(intensity),
-            offset: Offset(-lightSource.dx * blur / 20, -lightSource.dy * blur / 20),
-            blurRadius: blur,
-            spreadRadius: 1,
-          ),
-          // Тень "внутренняя" (тёмная)
-          BoxShadow(
-            color: isDark
-                ? Colors.grey.shade900.withOpacity(intensity)
-                : Colors.grey.shade500.withOpacity(intensity),
-            offset: Offset(lightSource.dx * blur / 20, lightSource.dy * blur / 20),
-            blurRadius: blur,
-            spreadRadius: 1,
-          ),
-        ];
+      [
+        const BoxShadow(
+          color: Colors.white,
+          offset: Offset(-6, -6),
+          blurRadius: 16,
+        ),
+        BoxShadow(
+          color: Colors.black.withAlpha(26),
+          offset: const Offset(6, 6),
+          blurRadius: 16,
+        ),
+      ];
 
     return Container(
       width: width,
