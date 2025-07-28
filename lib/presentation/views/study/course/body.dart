@@ -6,23 +6,56 @@ import 'package:poliglotim/presentation/viewmodels/course_viewmodel.dart';
 import 'package:poliglotim/presentation/views/ui/loading_indicator.dart';
 import 'package:poliglotim/presentation/views/ui/empty_placeholder.dart';
 
+
 import 'package:poliglotim/domain/models/lesson.dart';
 
-class ChapterBody extends StatelessWidget {
-  const ChapterBody({super.key});
+class Content extends StatefulWidget {
+  // late Lesson lesson;
+  final CourseViewModel viewModel;
+
+  const Content({super.key, required this.viewModel});
+
+  @override
+  State<Content> createState() => _ContentState();
+}
+
+class _ContentState extends State<Content> {
+
+  late final Lesson? lesson;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   setState(() {
+  //     lesson = widget.viewModel.lesson;
+  //   });
+  //   // lesson = widget.viewModel.lesson;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<CourseViewModel>();
+    // final viewModel = context.watch<CourseViewModel>();
 
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          // if (viewModel.chapters.length > 1) ChapterNavigation(viewModel: viewModel),
-          Expanded(child: LessonContent(viewModel: viewModel)),
-        ],
-      ),
+    return Expanded(
+      child: NeumorphicContainer(
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
+        child: ListenableBuilder(
+          listenable: widget.viewModel,
+          builder: (context, _) {
+            final selectedLesson = widget.viewModel.lesson;
+
+            if (widget.viewModel.isLoading) return const LoadingIndicator();
+            if (selectedLesson == null) return const EmptyPlaceholder(message: 'Выберите урок');
+            if (selectedLesson.title.isEmpty) {
+              return const LoadingIndicator(message: 'Загрузка содержимого...');
+            }
+
+            return Markdown(data: selectedLesson.text);
+            
+          }
+        )
+      )
     );
   }
 }
@@ -36,13 +69,13 @@ class LessonContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (viewModel.isLoading) return const LoadingIndicator();
-    if (viewModel.currentLesson == null) return const EmptyPlaceholder(message: 'Выберите урок');
-    if (viewModel.currentLesson!.text.isEmpty) {
+    if (viewModel.lesson == null) return const EmptyPlaceholder(message: 'Выберите урок');
+    if (viewModel.lesson!.text.isEmpty) {
       return const LoadingIndicator(message: 'Загрузка содержимого...');
     }
 
     return NeumorphicContainer(
-      child: Markdown(data: viewModel.currentLesson!.text),
+      child: Markdown(data: viewModel.lesson!.text),
     );
   }
 }

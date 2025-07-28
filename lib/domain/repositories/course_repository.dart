@@ -21,15 +21,10 @@ class CourseRepository {
     return (response as List).map((json) => Chapter.fromJson(json)).toList();
   }
 
-
-  Future<List<Lesson>> getChapterLessons(String chapterId) async {
-    final response = await apiClient.getChapterLessons(chapterId);
-    return (response as List).map((json) => Lesson.fromJson(json)).toList();
-  }
-
-  Future<Lesson> getLesson(String lessonId) async {
+  Future<String> getLessonText(String lessonId) async {
     final response = await apiClient.getLesson(lessonId);
-    return Lesson.fromJson(response);
+    Lesson lesson = Lesson.fromJson(response);
+    return lesson.text;
   }
 
 }

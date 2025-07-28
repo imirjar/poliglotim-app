@@ -29,17 +29,6 @@ class StudyApi {
     }
   }
 
-  Future<dynamic> getChapterLessons(String ip) async {
-    final uri = Uri.parse('$_coursesEndpoint/lessons/$ip');
-    final response = await httpClient.get(uri);
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to load data from $uri');
-    }
-  }
-
   Future<dynamic> getLesson(String ip) async {
     final uri = Uri.parse('$_coursesEndpoint/lesson/$ip');
     final response = await httpClient.get(uri);

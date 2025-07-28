@@ -1,7 +1,7 @@
 class Lesson {
   final String id;
   final String title;
-  final String text;
+  String text;
   final bool? isCompleted; // Добавим опциональное поле, если оно есть в API
 
   Lesson({
