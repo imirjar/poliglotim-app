@@ -32,6 +32,7 @@ class AuthViewModel with ChangeNotifier {
       
       await _localStorage.cacheToken(myToken!);
       _isAuthenticated = true;
+      notifyListeners();
     } catch (e) {
       _error = e.toString();
       print(" ERRRRRRORRRRR$e");

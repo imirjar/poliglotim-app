@@ -18,17 +18,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Course App',
+      title: 'Полиглотствуем',
       theme: AppTheme.lightTheme,
       home: const AuthChecker(),
       routes: {
         '/courses': (context) => const ProtectedRoute(child: CoursesScreen()),
         '/login': (context) => const LoginScreen(),
         '/course': (context) => ProtectedRoute(
-              child: CourseScreen(
-                courseId: ModalRoute.of(context)!.settings.arguments as String,
-              ),
-            ),
+          child: CourseScreen(
+            courseId: ModalRoute.of(context)!.settings.arguments as String,
+          ),
+        ),
       },
     );
   }
