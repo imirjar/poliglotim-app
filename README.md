@@ -1,5 +1,43 @@
 Курс китайского языка на Flutter
 
+This app contains multiple environments.
+
+* Development environment - This environment uses data from a JSON file, which is stored in the `assets` directory, and simulates developing locally.
+
+```bash 
+$ cd app
+$ flutter run --target lib/main_development.dart
+```
+
+* Staging environment - This environment uses an HTTP server to get data, simulating a real app experience. This is a "dummy" server, that has endpoints that simply return fake data. The server can be found in the `compass_app/server` directory. You need to run the server locally before running the Flutter application.
+
+```bash
+$ cd server
+$ dart run
+# => Server listening on port 8080
+ 
+$ cd ../compass_app/app
+$ flutter run --target lib/main_staging.dart 
+```
+
+## Integration Tests
+
+Integration tests must be run from the `app` directory.
+
+**Integration tests with local data**
+
+```bash
+cd app
+$ flutter test integration_test/app_local_data_test.dart
+```
+
+**Integration tests with background server and remote data**
+
+```bash
+cd app
+$ flutter test integration_test/app_server_data_test.dart
+```
+
 Это приложение для изучения китайского языка, созданное с использованием Flutter. Оно включает в себя уроки с заданиями разных типов, систему авторизации и сохранение прогресса пользователя.
 Основные функции
 
