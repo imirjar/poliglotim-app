@@ -10,6 +10,7 @@ class CoursesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    viewModel.getCourses();
     return LayoutBuilder(
       
       builder: (context, constraints) {
