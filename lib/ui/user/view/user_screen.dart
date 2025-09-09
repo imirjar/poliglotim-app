@@ -22,18 +22,18 @@ class UserScreen extends StatelessWidget {
         final verticalPadding = screenWidth < 550 ? 8.0 : 32.0;
         
         // Определяем количество колонок в зависимости от ширины экрана
-        int crossAxisCount;
-        if (screenWidth < 550) {
-          crossAxisCount = 1;
-        } else if (screenWidth < 800) {
-          crossAxisCount = 2; // Мобильные устройства
-        } else if (screenWidth < 1150) {
-          crossAxisCount = 3; // Планшеты
-        } else if (screenWidth < 1300) {
-          crossAxisCount = 4; // Небольшие десктопы
-        } else {
-          crossAxisCount = 5; // Большие экраны
-        }
+        // int crossAxisCount;
+        // if (screenWidth < 550) {
+        //   crossAxisCount = 1;
+        // } else if (screenWidth < 800) {
+        //   crossAxisCount = 2; // Мобильные устройства
+        // } else if (screenWidth < 1150) {
+        //   crossAxisCount = 3; // Планшеты
+        // } else if (screenWidth < 1300) {
+        //   crossAxisCount = 4; // Небольшие десктопы
+        // } else {
+        //   crossAxisCount = 5; // Большие экраны
+        // }
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 220, // Set this height
