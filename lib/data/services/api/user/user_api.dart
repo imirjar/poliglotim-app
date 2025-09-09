@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:poliglotim/domain/models/user.dart';
 import 'package:poliglotim/ui/core/constants/api_constants.dart';
 
-class AuthApi {
+class UserApi {
   final httpClient = http.Client();
   // static const String _loginEndpoint = "/login";
   static const String _baseUrl = ApiConstants.authEndpoint;
@@ -22,6 +23,26 @@ class AuthApi {
         final token = responseData["access_token"] as String?;
         if (token == null) throw Exception("Токен не получен");
         return token;
+      } catch (e) {
+        throw Exception("Ошибка декодирования JSON: $e");
+      }
+    } else {
+      throw Exception("Ошибка авторизации $response.statusCode");
+    }
+  }
+
+  // @override
+  Future<User> getUserData() async {
+    final response = await httpClient.get(
+      Uri.parse("$_baseUrl/user"),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (response.statusCode == 200) {
+      // return jsonDecode(response.body);
+      try {
+        final user = jsonDecode(utf8.decode(response.bodyBytes)) as User;
+        return user;
       } catch (e) {
         throw Exception("Ошибка декодирования JSON: $e");
       }

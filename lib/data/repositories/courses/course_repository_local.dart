@@ -5,7 +5,7 @@
 import 'dart:async';
 
 import 'package:poliglotim/data/repositories/courses/course_repository.dart';
-import 'package:poliglotim/data/services/local/courses_mock.dart';
+import 'package:poliglotim/data/services/local/mocks/courses_mock.dart';
 import 'package:poliglotim/domain/models/chapter.dart';
 import 'package:poliglotim/domain/models/course.dart';
 import 'package:poliglotim/domain/models/lesson.dart';
@@ -14,7 +14,7 @@ import '../../../utils/result.dart';
 
 
 class CourseRepositoryLocal implements CourseRepository {
-  CourseRepositoryLocal({required LocalDataService localDataService})
+  CourseRepositoryLocal({required LocalCourseDataService localDataService})
     : _localDataService = localDataService;
 
   // Only create default booking once
@@ -24,8 +24,8 @@ class CourseRepositoryLocal implements CourseRepository {
 
   List<Course> _courses = List<Course>.empty(growable: true);
   List<Chapter> _chapters = List<Chapter>.empty(growable: true);
-  late Lesson _lessonText;
-  final LocalDataService _localDataService;
+  // late Lesson _lessonText;
+  final LocalCourseDataService _localDataService;
 
 
   @override

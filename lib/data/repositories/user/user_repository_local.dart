@@ -1,22 +1,19 @@
-// Copyright 2024 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'package:logging/logging.dart';
-import 'package:poliglotim/data/services/api/auth_api.dart';
-import 'package:poliglotim/data/services/local/token_storage.dart';
+import 'package:poliglotim/data/services/local/mocks/user_mock.dart';
+import 'package:poliglotim/data/services/local/storages/token_storage.dart';
+import 'package:poliglotim/domain/models/user.dart';
 
 import '../../../utils/result.dart';
-import 'auth_repository.dart';
+import 'user_repository.dart';
 
-class AuthRepositoryRemote extends AuthRepository {
-  AuthRepositoryRemote({
-    required AuthApi authApiClient,
+class UserRepositoryLocal extends UserRepository {
+  UserRepositoryLocal({
+    required UserAPIMock userApiClient,
     required SharedPreferencesService sharedPreferencesService,
-  }) : _authApiClient = authApiClient,
+  }) : _authApiClient = userApiClient,
        _sharedPreferencesService = sharedPreferencesService;
 
-  final AuthApi _authApiClient;
+  final UserAPIMock _authApiClient;
   final SharedPreferencesService _sharedPreferencesService;
 
   bool? _isAuthenticated;
@@ -55,8 +52,9 @@ class AuthRepositoryRemote extends AuthRepository {
     required String password,
   }) async {
     try {
-      final result = await _authApiClient.login(
-       email, password
+      final result = _authApiClient.login(
+       email:email, 
+       password:password
       );
       switch (result) {
         case Ok():
@@ -97,6 +95,18 @@ class AuthRepositoryRemote extends AuthRepository {
     }
   }
 
-  String? _authHeaderProvider() =>
-      _authToken != null ? 'Bearer $_authToken' : null;
+  @override
+  Future<Result<User>> getUserData() async {
+    try {
+      final User result = _authApiClient.getUserData();
+      return Result.ok(result);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  // String? _authHeaderProvider() =>
+  //     _authToken != null ? 'Bearer $_authToken' : null;
+
+  
 }

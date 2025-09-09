@@ -10,7 +10,7 @@ import 'package:poliglotim/domain/models/course.dart';
 import 'package:poliglotim/domain/models/lesson.dart';
 import 'package:poliglotim/domain/models/user.dart';
 
-import '../../../utils/result.dart';
+import '../../../../utils/result.dart';
 
 
 /// Adds the `Authentication` header to a header configuration.

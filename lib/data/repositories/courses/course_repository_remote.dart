@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:poliglotim/data/repositories/courses/course_repository.dart';
-import 'package:poliglotim/data/services/api/course_client.dart';
+import 'package:poliglotim/data/services/api/course/course_client.dart';
 import 'package:poliglotim/domain/models/chapter.dart';
 import 'package:poliglotim/domain/models/course.dart';
 import 'package:poliglotim/domain/models/lesson.dart';

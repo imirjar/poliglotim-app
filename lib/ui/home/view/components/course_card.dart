@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poliglotim/domain/models/course.dart';
-import 'package:poliglotim/routing/router.dart';
 
 class CourseCard extends StatelessWidget{
   final Course course;

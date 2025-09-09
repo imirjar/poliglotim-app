@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:poliglotim/ui/courses/view/courses_body.dart';
-import 'package:poliglotim/ui/courses/view/courses_header.dart';
-import 'package:poliglotim/ui/courses/view_models/courses_viewmodel.dart';
+import 'package:poliglotim/ui/home/view/home_body.dart';
+import 'package:poliglotim/ui/home/view/home_header.dart';
+import 'package:poliglotim/ui/home/view_models/home_viewmodel.dart';
 
-class CoursesScreen extends StatelessWidget {
-  const CoursesScreen({super.key, required this.viewModel});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key, required this.viewModel});
 
-  final CoursesViewModel viewModel;
+  final HomeViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +34,9 @@ class CoursesScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 220, // Set this height
-            flexibleSpace: CoursesHeader(viewModel:  viewModel, screenWidth: screenWidth, horizontalPadding: horizontalPadding, verticalPadding:verticalPadding),
+            flexibleSpace: HomeHeader(viewModel:  viewModel, screenWidth: screenWidth, horizontalPadding: horizontalPadding, verticalPadding:verticalPadding),
           ),
-          body: CoursesBody(crossAxisCount: crossAxisCount, viewModel: viewModel),
+          body: HomeBody(crossAxisCount: crossAxisCount, viewModel: viewModel),
         );
       }
     );

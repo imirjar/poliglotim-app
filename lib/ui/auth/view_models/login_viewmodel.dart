@@ -1,7 +1,7 @@
 import 'package:logging/logging.dart';
 
 
-import 'package:poliglotim/data/repositories/auth/auth_repository.dart';
+import 'package:poliglotim/data/repositories/user/user_repository.dart';
 import '../../../../utils/command.dart';
 import '../../../../utils/result.dart';
 
@@ -9,11 +9,11 @@ import '../../../../utils/result.dart';
 class LoginViewModel {
   // LoginViewModel(this._repository, this._localStorage);
 
-  LoginViewModel({required AuthRepository authRepository})
+  LoginViewModel({required UserRepository authRepository})
     : _authRepository = authRepository {
     login = Command1<void, (String email, String password)>(_login);
   }
-  final AuthRepository _authRepository;
+  final UserRepository _authRepository;
   final _log = Logger('LoginViewModel');
 
   late Command1 login;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:poliglotim/ui/courses/view/components/course_card.dart';
-import 'package:poliglotim/ui/courses/view_models/courses_viewmodel.dart';
+import 'package:poliglotim/ui/home/view/components/course_card.dart';
+import 'package:poliglotim/ui/home/view_models/home_viewmodel.dart';
 
 // courses_body.dart
-class CoursesBody extends StatelessWidget {
-  final CoursesViewModel viewModel;
+class HomeBody extends StatelessWidget {
+  final HomeViewModel viewModel;
   final int crossAxisCount;
 
-  const CoursesBody({
+  const HomeBody({
     super.key, 
     required this.crossAxisCount, 
     required this.viewModel

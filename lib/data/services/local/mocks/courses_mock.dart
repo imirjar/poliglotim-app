@@ -3,7 +3,7 @@ import 'package:poliglotim/domain/models/course.dart';
 import 'package:poliglotim/domain/models/lesson.dart';
 
 
-class LocalDataService {
+class LocalCourseDataService {
   List<Course> getCourses() {
     return [
       Course(

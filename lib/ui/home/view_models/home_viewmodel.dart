@@ -4,11 +4,11 @@ import 'package:poliglotim/domain/models/course.dart';
 import 'package:poliglotim/data/repositories/courses/course_repository.dart';
 import 'package:poliglotim/utils/result.dart';
 
-class CoursesViewModel with ChangeNotifier {
+class HomeViewModel with ChangeNotifier {
   final CourseRepository _repository;
   final _log = Logger('CoursesViewModel');
 
-  CoursesViewModel({
+  HomeViewModel({
     required CourseRepository courseRepository,
   }) : _repository = courseRepository;
 
