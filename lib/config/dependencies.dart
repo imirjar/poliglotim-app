@@ -4,7 +4,6 @@ import 'package:poliglotim/data/repositories/courses/course_repository_local.dar
 import 'package:poliglotim/data/repositories/courses/course_repository_remote.dart';
 import 'package:poliglotim/data/services/api/user/user_api.dart';
 import 'package:poliglotim/data/services/api/course/course_client.dart';
-import 'package:poliglotim/data/services/api/course/study_api.dart';
 import 'package:poliglotim/data/services/local/mocks/user_mock.dart';
 import 'package:poliglotim/data/services/local/storages/token_storage.dart';
 import 'package:poliglotim/data/repositories/user/user_repository.dart';
@@ -30,7 +29,7 @@ List<SingleChildWidget> get providersRemote {
     ),
 
     // Course
-    Provider(create: (context) => StudyApi()),
+    // Provider(create: (context) => StudyApi()),
     Provider(create: (context) => CourseClient()),
     Provider(
       create: (context) =>
@@ -57,7 +56,7 @@ List<SingleChildWidget> get providersLocal {
     ),
 
     // Course
-    Provider(create: (context) => StudyApi()),
+    // Provider(create: (context) => StudyApi()),
     Provider(create: (context) => LocalCourseDataService()),
     Provider(
       create: (context) =>

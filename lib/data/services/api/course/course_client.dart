@@ -1,127 +1,126 @@
-// Copyright 2024 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
+// course_client.dart
 import 'dart:convert';
-import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:universal_io/io.dart';
 
 import 'package:poliglotim/domain/models/chapter.dart';
 import 'package:poliglotim/domain/models/course.dart';
 import 'package:poliglotim/domain/models/lesson.dart';
 import 'package:poliglotim/domain/models/user.dart';
-
 import '../../../../utils/result.dart';
 
-
-/// Adds the `Authentication` header to a header configuration.
 typedef AuthHeaderProvider = String? Function();
 
 class CourseClient {
-  CourseClient({String? host, int? port, HttpClient Function()? clientFactory})
+  CourseClient({String? host, int? port})
     : _host = host ?? 'api.poliglotim.ru',
       _port = port ?? 80,
-      _clientFactory = clientFactory ?? HttpClient.new;
+      _baseUrl = Uri.parse('http://${host ?? 'api.poliglotim.ru'}');
 
   final String _host;
   final int _port;
-  final HttpClient Function() _clientFactory;
-
+  final Uri _baseUrl;
+  
   AuthHeaderProvider? _authHeaderProvider;
 
   set authHeaderProvider(AuthHeaderProvider authHeaderProvider) {
     _authHeaderProvider = authHeaderProvider;
   }
 
-  Future<void> _authHeader(HttpHeaders headers) async {
-    final header = _authHeaderProvider?.call();
-    if (header != null) {
-      headers.add(HttpHeaders.authorizationHeader, header);
+  Map<String, String> _getHeaders() {
+    final headers = <String, String>{
+      'Content-Type': 'application/json',
+    };
+    
+    final authHeader = _authHeaderProvider?.call();
+    if (authHeader != null) {
+      headers['Authorization'] = authHeader;
     }
+    
+    return headers;
+  }
+
+  Uri _buildUrl(String path) {
+    return _baseUrl.replace(path: path);
   }
 
   Future<Result<List<Course>>> getCourses() async {
-    final client = _clientFactory();
     try {
-      final request = await client.get(_host, _port, '/courses');
-      await _authHeader(request.headers);
-      final response = await request.close();
+      final url = _buildUrl('/courses');
+      final response = await http.get(
+        url,
+        headers: _getHeaders(),
+      );
+      
       if (response.statusCode == 200) {
-        final stringData = await response.transform(utf8.decoder).join();
-        final json = jsonDecode(stringData) as List<dynamic>;
+        final json = jsonDecode(response.body) as List<dynamic>;
         return Result.ok(
           json.map((element) => Course.fromJson(element)).toList(),
         );
       } else {
-        return const Result.error(HttpException("Invalid response"));
+        return Result.error(Exception("Invalid response: ${response.statusCode}"));
       }
     } on Exception catch (error) {
       return Result.error(error);
-    } finally {
-      client.close();
     }
   }
 
-  Future<Result<List<Chapter>>> getCourseChapters(String ip) async {
-    final client = _clientFactory();
+  Future<Result<List<Chapter>>> getCourseChapters(String id) async {
     try {
-      final request = await client.get(_host, _port, '/chapters/$ip');
-      await _authHeader(request.headers);
-      final response = await request.close();
+      final url = _buildUrl('/chapters/$id');
+      final response = await http.get(
+        url,
+        headers: _getHeaders(),
+      );
+      
       if (response.statusCode == 200) {
-        final stringData = await response.transform(utf8.decoder).join();
-        final json = jsonDecode(stringData) as List<dynamic>;
+        final json = jsonDecode(response.body) as List<dynamic>;
         return Result.ok(
           json.map((element) => Chapter.fromJson(element)).toList(),
         );
       } else {
-        return const Result.error(HttpException("Invalid response"));
+        return Result.error(Exception("Invalid response: ${response.statusCode}"));
       }
     } on Exception catch (error) {
       return Result.error(error);
-    } finally {
-      client.close();
     }
   }
 
-  Future<Result<Lesson>> getLesson(String ip) async {
-    final client = _clientFactory();
+  Future<Result<Lesson>> getLesson(String id) async {
     try {
-      final request = await client.get(_host, _port, '/lesson/$ip');
-      await _authHeader(request.headers);
-      final response = await request.close();
+      final url = _buildUrl('/lesson/$id');
+      final response = await http.get(
+        url,
+        headers: _getHeaders(),
+      );
+      
       if (response.statusCode == 200) {
-        final stringData = await response.transform(utf8.decoder).join();
-        final user = Lesson.fromJson(jsonDecode(stringData));
-        return Result.ok(user);
+        final lesson = Lesson.fromJson(jsonDecode(response.body));
+        return Result.ok(lesson);
       } else {
-        return const Result.error(HttpException("Invalid response"));
+        return Result.error(Exception("Invalid response: ${response.statusCode}"));
       }
     } on Exception catch (error) {
       return Result.error(error);
-    } finally {
-      client.close();
     }
   }
 
   Future<Result<User>> getUser() async {
-    final client = _clientFactory();
     try {
-      final request = await client.get(_host, _port, '/user');
-      await _authHeader(request.headers);
-      final response = await request.close();
+      final url = _buildUrl('/user');
+      final response = await http.get(
+        url,
+        headers: _getHeaders(),
+      );
+      
       if (response.statusCode == 200) {
-        final stringData = await response.transform(utf8.decoder).join();
-        final user = User.fromJson(jsonDecode(stringData));
+        final user = User.fromJson(jsonDecode(response.body));
         return Result.ok(user);
       } else {
-        return const Result.error(HttpException("Invalid response"));
+        return Result.error(Exception("Invalid response: ${response.statusCode}"));
       }
     } on Exception catch (error) {
       return Result.error(error);
-    } finally {
-      client.close();
     }
   }
-
- 
 }
