@@ -1,19 +1,20 @@
-# Используем официальный образ Flutter для сборки
-FROM ghcr.io/cirruslabs/flutter:stable AS build
-
-WORKDIR /app
-
-# Копируем исходники
-COPY . .
-
-# Собираем веб-версию
-RUN flutter pub get && flutter build web --release
-
-# Используем Nginx для раздачи
+# Use official nginx image
 FROM nginx:alpine
 
-# Копируем собранные файлы из предыдущего этапа
-COPY --from=build /app/build/web /usr/share/nginx/html
+# Set working directory
+WORKDIR /usr/share/nginx/html
 
-# Настраиваем Nginx для корректной работы SPA (Single Page Application)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Remove default nginx static files
+RUN rm -rf ./*
+
+# Copy built Flutter web files
+COPY build/web/ .
+
+# Copy custom nginx configuration (optional)
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
