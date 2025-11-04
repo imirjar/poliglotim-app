@@ -59,4 +59,3 @@ jobs:
         files: poliglotim-app.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
