@@ -2,11 +2,8 @@ name: Build and Release
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
-
+    tags: ['v*']  # Запускается при создании тега v*
+  workflow_dispatch:  # Ручной запуск
 
 env:
   FLUTTER_VERSION: '3.35.7'
