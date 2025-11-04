@@ -2,14 +2,17 @@ name: Build and Release
 
 on:
   push:
-    tags: ['v*']  # Запускается при создании тега v*
-  workflow_dispatch:  # Ручной запуск
+    tags: ['v*']
+  workflow_dispatch:
 
 env:
   FLUTTER_VERSION: '3.35.7'
 
+permissions:
+  contents: write
+
 jobs:
-  build-web:
+  build-and-release:
     runs-on: ubuntu-latest
     
     steps:
@@ -33,26 +36,9 @@ jobs:
         cd build/web
         zip -r poliglotim-app.zip .
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: poliglotim-web-app
-        path: build/web/poliglotim-app.zip
-        retention-days: 30
-
-  release:
-    runs-on: ubuntu-latest
-    needs: build-web
-    
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: poliglotim-web-app
-
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        files: poliglotim-app.zip
+        files: build/web/poliglotim-app.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
