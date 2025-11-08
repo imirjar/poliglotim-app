@@ -36,7 +36,7 @@ jobs:
         # Копируем собранное приложение и файлы развертывания в одну папку
         mkdir -p release
         cp -r build/web release/web
-        cp docker-compose.yml nginx.conf .env.example release/
+        cp docker-compose.yml nginx.conf .env release/
         
         # Создаем архив
         cd release
