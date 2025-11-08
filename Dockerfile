@@ -1,20 +1,28 @@
-# Use official nginx image
+# Используем официальный nginx образ
 FROM nginx:alpine
 
-# Set working directory
-WORKDIR /usr/share/nginx/html
+# Копируем собранное Flutter web приложение
+COPY build/web /usr/share/nginx/html
 
-# Remove default nginx static files
-RUN rm -rf ./*
+# Настраиваем nginx для SPA приложения
+RUN echo 'server { \
+    listen 80; \
+    server_name _; \
+    root /usr/share/nginx/html; \
+    index index.html; \
+    \
+    location / { \
+        try_files $uri $uri/ /index.html; \
+    } \
+    \
+    # Кэширование статических ресурсов \
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ { \
+        expires 1y; \
+        add_header Cache-Control "public, immutable"; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Copy built Flutter web files
-COPY build/web/ .
-
-# Copy custom nginx configuration (optional)
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80
+# Открываем порт 80
 EXPOSE 80
 
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
