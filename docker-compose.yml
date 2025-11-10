@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 
   poliglotim-api:
-    image: ghcr.io/imirjar/poliglotim-api:latest  
+    image: ghcr.io/imirjar/poliglotim-api:latest
     environment:
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
@@ -22,3 +22,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - NODE_ENV=${NODE_ENV}
     restart: unless-stopped
+
+# Добавляем секцию для аутентификации
+x-registry-auth:
+  ghcr.io:
+    username: ${GITHUB_USERNAME}
+    password: ${GITHUB_TOKEN}
