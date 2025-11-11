@@ -43,7 +43,6 @@ jobs:
 
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v4
-      if: github.ref_type == 'tag'
 
   build-macos:
     runs-on: macos-latest
@@ -64,10 +63,27 @@ jobs:
     - name: Build macOS
       run: flutter build macos --release
 
-    - name: Create Release and Upload macOS Artifact
+    - name: Install create-dmg
+      run: brew install create-dmg
+
+    - name: Create DMG for macOS
+      run: |
+        create-dmg \
+          --volname "Poliglotim ${{ github.ref_name }}" \
+          --window-pos 200 120 \
+          --window-size 800 400 \
+          --icon-size 100 \
+          --icon "Poliglotim.app" 200 190 \
+          --hide-extension "Poliglotim.app" \
+          --app-drop-link 600 185 \
+          "Poliglotim-${{ github.ref_name }}.dmg" \
+          "build/macos/Build/Products/Release/Poliglotim.app"
+
+    - name: Create Release with macOS app
       uses: softprops/action-gh-release@v1
       with:
-        files: build/macos/Build/Products/Release/*.app
+        files: |
+          Poliglotim-${{ github.ref_name }}.dmg
         generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
